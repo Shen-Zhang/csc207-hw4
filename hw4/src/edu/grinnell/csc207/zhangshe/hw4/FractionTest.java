@@ -26,6 +26,8 @@ public class FractionTest
                   new BigInteger ("10"), test.LCD (test2));
     assertEquals ("Case 2: One denominator is a multiple of another",
                   new BigInteger ("10"), test2.LCD (test));
+    
+   
 
   }
 
