@@ -166,8 +166,18 @@ public class Fraction
     toFraction (String str)
   {
     int index = str.indexOf ('/');
-    BigInteger num = new BigInteger (str.substring (0, index));
-    BigInteger denom = new BigInteger (str.substring (index + 1));
+    BigInteger num, denom;
+    if (index > 0)
+      {
+        num = new BigInteger (str.substring (0, index));
+        denom = new BigInteger (str.substring (index + 1));
+      }
+    else
+      {
+        num = new BigInteger (str);
+        denom = BigInteger.ONE;
+      }
+
     return new Fraction (num, denom);
 
   }// toFraction

@@ -12,7 +12,7 @@ public class Calculator
    * @return a BigInteger, whose value is computed based on the given string
    * @throws Exception
    */
-  public static void
+  public static Fraction
     eval0 (String str)
       throws Exception
   {
@@ -24,7 +24,7 @@ public class Calculator
     if (space < 0)
       {
         System.out.println (str);
-
+        soFar =  Fraction.toFraction (str);
       }// return the value of the string if
        // there is no space
     if (space >= 0)
@@ -34,7 +34,7 @@ public class Calculator
         Fraction newFrac = new Fraction (BigInteger.ZERO, BigInteger.ONE);
         if (slash >= 0)
           {
-            Fraction f = checkFrac (temp);
+            Fraction.toFraction (temp);
           }
         else
           {
@@ -45,15 +45,15 @@ public class Calculator
         copy = copy.substring (space);
         space = copy.indexOf (' ');
         char command = copy.charAt (space + 1); // get the evaluation
-        int newSpace = copy.indexOf (' ', space + 3); //get the location of the next space
-        
+        int newSpace = copy.indexOf (' ', space + 3); // get the location of the
+                                                      // next space
+        // Anything after the first number
         while (newSpace >= 0)
           {
-            newVal = newVal.add (new Fraction (
-                                               new BigInteger (
-                                                               copy.substring (space + 3,
-                                                                               newSpace)),
-                                               BigInteger.ONE)); // get the
+
+            newVal = newVal.add (Fraction.toFraction (copy.substring (space + 3,
+                                                                      newSpace)));
+            // get the
             // value
             // of the second integer
 
@@ -70,25 +70,17 @@ public class Calculator
             command = copy.charAt (space + 1);
             newSpace = copy.indexOf (' ', space + 3);
           } // while
-        newVal = newVal.add (new Fraction (
-                                           new BigInteger (
-                                                           copy.substring (space + 3,
-                                                                           newSpace)),
-                                           BigInteger.ONE)); // the
+
+        newVal = newVal.add (Fraction.toFraction (copy.substring (space + 3,
+                                                                  newSpace))); // the
         // last
         // integer
 
         soFar = compute (soFar, newVal, command);
         System.out.println (soFar);
       } // if space >= 0
+    return soFar;
   } // eval0
-
-  public static Fraction
-    checkFrac (String str)
-  {
-    Fraction frac = Fraction.toFraction (str);
-    return frac;
-  }
 
   /**
    * 
@@ -101,7 +93,7 @@ public class Calculator
    * @return a BigInteger
    * @throws Exception
    * 
-   * @precondition command can only be +, -, *, / or ^
+   * @precondition command can only be +, -, *, /
    * @postcondition BigInteger.divide will truncate any number after the decimal
    *                points
    */

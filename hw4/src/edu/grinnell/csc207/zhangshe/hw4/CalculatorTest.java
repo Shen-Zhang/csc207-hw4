@@ -10,7 +10,8 @@ public class CalculatorTest {
 	@Test
 	public void test() throws Exception {
 	    Fraction a = new Fraction(new BigInteger("2"), new BigInteger("3"));
-	    Calculator.eval0("2/3 + 1/3");
+	    
+	    assertEquals("3/3",Calculator.eval0("2/3 + 1/3").toString ());
 	    //assertEquals ()
 	    
 /*	    assertEquals (BigInteger.valueOf (0), Calculator.eval0 ("0"));
