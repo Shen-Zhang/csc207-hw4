@@ -6,187 +6,219 @@ import java.math.BigInteger;
  * A simple implementation of Fractions.
  * 
  * @author Samuel A. Rebelsky
- * @author YOUR NAME HERE
- * @author CSC152 2005S
+ * @author ALex, Helen, Shen
+ * @author CSC207 2014
  * @version 1.0 of February 2005
  */
-public class Fraction {
-	// +------------------+---------------------------------------------
-	// | Design Decisions |
-	// +------------------+
-	/*
-	 * (1) Denominators are always positive. Therefore, negative fractions are
-	 * represented with a negative numerator. Similarly, if a fraction has a
-	 * negative numerator, it is negative.
-	 * 
-	 * (2) Fractions are not necessarily stored in simplified form. To obtain a
-	 * fraction in simplified form, one must call the simplify method.
-	 */
+public class Fraction
+{
+  // +------------------+---------------------------------------------
+  // | Design Decisions |
+  // +------------------+
+  /*
+   * (1) Denominators are always positive. Therefore, negative fractions are
+   * represented with a negative numerator. Similarly, if a fraction has a
+   * negative numerator, it is negative.
+   * 
+   * (2) Fractions are not necessarily stored in simplified form. To obtain a
+   * fraction in simplified form, one must call the simplify method.
+   */
 
-	// +--------+-------------------------------------------------------
-	// | Fields |
-	// +--------+
+  // +--------+-------------------------------------------------------
+  // | Fields |
+  // +--------+
 
-	/** The numerator of the fraction. Can be positive, zero or negative. */
-	BigInteger num;
+  /** The numerator of the fraction. Can be positive, zero or negative. */
+  BigInteger num;
 
-	/** The denominator of the fraction. Must be non-negative. */
-	BigInteger denom;
+  /** The denominator of the fraction. Must be non-negative. */
+  BigInteger denom;
 
-	// +--------------+-------------------------------------------------
-	// | Constructors |
-	// +--------------+
+  // +--------------+-------------------------------------------------
+  // | Constructors |
+  // +--------------+
 
-	/**
-	 * Build a new fraction with numerator num and denominator denom.
-	 * 
-	 * Warning! Not yet stable.
-	 */
-	public Fraction(BigInteger num, BigInteger denom) {
-		this.num = num;
-		this.denom = denom;
-	} // Fraction(BigInteger, BigInteger)
+  /**
+   * Build a new fraction with numerator num and denominator denom.
+   * 
+   * Warning! Not yet stable.
+   */
+  public Fraction (BigInteger num, BigInteger denom)
+  {
+    this.num = num;
+    this.denom = denom;
+  } // Fraction(BigInteger, BigInteger)
 
-	/**
-	 * Build a new fraction with numerator num and denominator denom.
-	 * 
-	 * Warning! Not yet stable.
-	 */
-	public Fraction(int num, int denom) {
-		this.num = BigInteger.valueOf(num);
-		this.denom = BigInteger.valueOf(denom);
-	} // Fraction(int, int)
+  /**
+   * Build a new fraction with numerator num and denominator denom.
+   * 
+   * Warning! Not yet stable.
+   */
+  public Fraction (int num, int denom)
+  {
+    this.num = BigInteger.valueOf (num);
+    this.denom = BigInteger.valueOf (denom);
+  } // Fraction(int, int)
 
-	// +---------+------------------------------------------------------
-	// | Methods |
-	// +---------+
+  // +---------+------------------------------------------------------
+  // | Methods |
+  // +---------+
 
-	/**
-	 * Express this fraction as a double.
-	 */
-	public double doubleValue() {
-		return this.num.doubleValue() / this.denom.doubleValue();
-	} // doubleValue()
+  /**
+   * Express this fraction as a double.
+   */
+  public double
+    doubleValue ()
+  {
+    return this.num.doubleValue () / this.denom.doubleValue ();
+  } // doubleValue()
 
-	/**
-	 * Add the fraction other to this fraction.
-	 */
-	public Fraction add(Fraction addMe) {
-		BigInteger resultNumerator;
-		BigInteger resultDenominator;
+  /**
+   * Add the fraction other to this fraction.
+   */
+  public Fraction
+    add (Fraction addMe)
+  {
+    BigInteger resultNumerator;
+    BigInteger resultDenominator;
 
-		// The denominator of the result is the
-		// product of this object's denominator
-		// and addMe's denominator
-		resultDenominator = this.denom.multiply(addMe.denom);
-		// The numerator is more complicated
-		resultNumerator = (this.num.multiply(addMe.denom)).add(addMe.num
-				.multiply(this.denom));
+    // The denominator of the result is the
+    // product of this object's denominator
+    // and addMe's denominator
+    resultDenominator = this.denom.multiply (addMe.denom);
+    // The numerator is more complicated
+    resultNumerator = (this.num.multiply (addMe.denom)).add (addMe.num.multiply (this.denom));
 
-		// Return the computed value
-		return reduce(resultNumerator, resultDenominator);
-	}// add(Fraction)
+    // Return the computed value
+    return reduce (resultNumerator, resultDenominator);
+  }// add(Fraction)
 
-	/**
-	 * Convert this fraction to a string for ease of printing.
-	 */
-	public String toString() {
-		// Special case: It's zero
-		if (this.num.equals(BigInteger.ZERO)) {
-			return "0";
-		} // if it's zero
+  /**
+   * Convert this fraction to a string for ease of printing.
+   */
+  public String
+    toString ()
+  {
+    // Special case: It's zero
+    if (this.num.equals (BigInteger.ZERO))
+      {
+        return "0";
+      } // if it's zero
 
-		// Lump together the string represention of the numerator,
-		// a slash, and the string representation of the denominator
-		// return this.num.toString().concat("/").concat(this.denom.toString());
-		return this.num + "/" + this.denom;
-	} // toString()
+    // Lump together the string represention of the numerator,
+    // a slash, and the string representation of the denominator
+    // return this.num.toString().concat("/").concat(this.denom.toString());
+    return this.num + "/" + this.denom;
+  } // toString()
 
-	public Fraction reduce (BigInteger a, BigInteger b)
-	{
-		BigInteger gcd = a.gcd(b);
-		
-		a = a.divide(gcd);
-		b = b.divide(gcd);
-		return new Fraction(a,b);
-		
-	}
-	public Fraction divide(Fraction divisor) {
+  public Fraction
+    reduce (BigInteger a, BigInteger b)
+  {
+    if ((a.compareTo (BigInteger.ZERO) < 0)
+        && (b.compareTo (BigInteger.ZERO) < 0))
+      {
+        a = a.abs ();
+        b = b.abs ();
+      }
+    BigInteger gcd = a.gcd (b);
 
-		BigInteger num = this.num.multiply(divisor.denom);
-		BigInteger denom = this.denom.multiply(divisor.num);
-				
+    a = a.divide (gcd);
+    b = b.divide (gcd);
+    return new Fraction (a, b);
 
-		return reduce(num,denom);
+  }
 
-	}// divide
+  public Fraction
+    divide (Fraction divisor)
+  {
 
-	public BigInteger LCD(Fraction comp) {
-		BigInteger leastcommon = BigInteger.ZERO;
-		for (BigInteger i = BigInteger.ONE; i.compareTo(comp.denom) != 1; i = i
-				.add(BigInteger.ONE)) {
-			leastcommon = this.denom.multiply(i);
-			if (leastcommon.mod(comp.denom) == BigInteger.ZERO) {
-				break;
-			}// if
-		}// for
+    BigInteger num = this.num.multiply (divisor.denom);
+    BigInteger denom = this.denom.multiply (divisor.num);
 
-		return leastcommon;
-	}// LCD
+    return reduce (num, denom);
 
-	public BigInteger GCD(Fraction comp)
+  }// divide
 
-	{
-		return this.denom.gcd(comp.denom);
-	}// GCD
+  public BigInteger
+    LCD (Fraction comp)
+  {
+    BigInteger leastcommon = BigInteger.ZERO;
+    for (BigInteger i = BigInteger.ONE; i.compareTo (comp.denom) != 1; i = i.add (BigInteger.ONE))
+      {
+        leastcommon = this.denom.multiply (i);
+        if (leastcommon.mod (comp.denom) == BigInteger.ZERO)
+          {
+            break;
+          }// if
+      }// for
 
-	public static Fraction toFraction(String str) {
-		int index = str.indexOf('/');
-		BigInteger num = new BigInteger(str.substring(0, index));
-		BigInteger denom = new BigInteger(str.substring(index + 1));
-		return new Fraction(num, denom);
+    return leastcommon;
+  }// LCD
 
-	}// toFraction
+  public BigInteger
+    GCD (Fraction comp)
 
-	// These two methods are from Helen Dougherty and Shen Zhang
-	public Fraction fractional() throws Exception {
-		BigInteger resultNumerator = this.num.remainder(this.denom);
+  {
+    return this.denom.gcd (comp.denom);
+  }// GCD
 
-		return new Fraction(resultNumerator, this.denom);
+  public static Fraction
+    toFraction (String str)
+  {
+    int index = str.indexOf ('/');
+    BigInteger num = new BigInteger (str.substring (0, index));
+    BigInteger denom = new BigInteger (str.substring (index + 1));
+    return new Fraction (num, denom);
 
-	}// fractional
+  }// toFraction
 
-	/**
-	 * multiply two fractions
-	 */
-	public Fraction multiplyFraction(Fraction multiplyMe) throws Exception {
-		BigInteger resultNumerator;
-		BigInteger resultDenominator;
+  // These two methods are from Helen Dougherty and Shen Zhang
+  public Fraction
+    fractional ()
+      throws Exception
+  {
+    BigInteger resultNumerator = this.num.remainder (this.denom);
 
-		// The denominator of the result is the
-		// product of this object's denominator
-		// and addMe's denominator
-		resultDenominator = this.denom.multiply(multiplyMe.denom);
-		// The numerator is more complicated
-		resultNumerator = this.num.multiply(multiplyMe.num);
-		// Return the computed value
-		if (resultDenominator.compareTo(BigInteger.ZERO) == 0)
-			throw new Exception("The denominator is zero.");
-		return new Fraction(resultNumerator, resultDenominator);
+    return new Fraction (resultNumerator, this.denom);
 
-	} // multiplyFraction
+  }// fractional
 
-	public Fraction subtract(Fraction sub) {
-		BigInteger resultNumerator;
-		BigInteger resultDenominator;
+  /**
+   * multiply two fractions
+   */
+  public Fraction
+    multiplyFraction (Fraction multiplyMe)
+      throws Exception
+  {
+    BigInteger resultNumerator;
+    BigInteger resultDenominator;
 
-		resultDenominator = this.denom.multiply(sub.denom);
+    // The denominator of the result is the
+    // product of this object's denominator
+    // and addMe's denominator
+    resultDenominator = this.denom.multiply (multiplyMe.denom);
+    // The numerator is more complicated
+    resultNumerator = this.num.multiply (multiplyMe.num);
+    // Return the computed value
+    if (resultDenominator.compareTo (BigInteger.ZERO) == 0)
+      throw new Exception ("The denominator is zero.");
 
-		resultNumerator = (this.num.multiply(sub.denom)).subtract(sub.num
-				.multiply(this.denom));
+    return reduce (resultNumerator, resultDenominator);
 
-		return reduce(resultNumerator, resultDenominator);
+  } // multiplyFraction
 
-	}// subtract
+  public Fraction
+    subtract (Fraction sub)
+  {
+    BigInteger resultNumerator;
+    BigInteger resultDenominator;
+
+    resultDenominator = this.denom.multiply (sub.denom);
+
+    resultNumerator = (this.num.multiply (sub.denom)).subtract (sub.num.multiply (this.denom));
+
+    return reduce (resultNumerator, resultDenominator);
+
+  }// subtract
 }// Class
 
